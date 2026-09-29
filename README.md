@@ -1,84 +1,223 @@
 # Task Management System
 
-A beginner Flask web application that manages a team's daily tasks. Tasks are stored in a Python
-list of dictionaries (no database) and displayed with Jinja2 templates.
+A simple Flask web application for managing team tasks. The application allows users to create, view, update, search, change status, and delete tasks. Task data is stored in a JSON file for persistence.
+
+## Features
+
+* Create new tasks
+* View all tasks
+* View complete task details
+* Update task title, description, and priority
+* Change task status
+* Set task priority as Low, Medium, or High
+* Search tasks by title or description
+* Delete tasks
+* Store tasks in a JSON file
+* Load saved tasks when the application starts
+* Custom 404 page
+
+## Technologies Used
+
+* Python
+* Flask
+* Jinja2
+* HTML
+* CSS
+* JSON
+* uv
+
+## Project Structure
+
+```text
+task-management/
+├── src/
+│   └── task_management/
+│       ├── app.py
+│       ├── data.py
+│       ├── tasks.json
+│       │
+│       ├── routes/
+│       │   ├── main.py
+│       │   └── task.py
+│       │
+│       ├── templates/
+│       │   ├── base.html
+│       │   ├── index.html
+│       │   ├── tasks.html
+│       │   ├── task_details.html
+│       │   ├── create_task.html
+│       │   ├── update_task.html
+│       │   ├── search.html
+│       │   ├── status.html
+│       │   └── 404.html
+│       │
+│       └── static/
+│           └── style.css
+│
+├── pyproject.toml
+└── uv.lock
+```
 
 ## Requirements
 
-- Python 3.10 or newer
-- Flask 3.x
+* Python 3.12 or newer
+* uv
+
+## Installation
+
+Create a virtual environment:
+
+```bash
+uv venv
+```
+
+Activate the virtual environment on Windows:
+
+```powershell
+.venv\Scripts\activate
+```
 
 Install Flask:
 
-```
+```bash
 uv add flask
 ```
 
-## How to run
+## Running the Application
 
-From inside the project folder, run this exact command:
+Move into the application directory:
 
+```powershell
+cd src\task_management
 ```
-python __init__.py
+
+Run the application:
+
+```powershell
+uv run python app.py
 ```
 
-Then open the application in a browser:
+Open the application in your browser:
 
-```
+```text
 http://127.0.0.1:5000
 ```
 
-Stop the server with `Ctrl + C`.
+## Features
 
-## Project structure
+### Create Task
 
+Users can create a task by providing:
+
+* Task ID
+* Title
+* Description
+* Status
+* Priority
+
+### View Tasks
+
+The tasks page displays all available tasks with their:
+
+* Task ID
+* Title
+* Description
+* Status
+* Priority
+
+### Task Details
+
+Each task has a separate details page where the complete task information can be viewed.
+
+### Update Task
+
+Users can update:
+
+* Title
+* Description
+* Priority
+
+The Task ID remains unchanged.
+
+### Change Status
+
+A task can have one of the following statuses:
+
+```text
+Pending
+In Progress
+Completed
 ```
-task-management/
-├── app.py
-├── README.md
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   ├── tasks.html
-│   ├── create_task.html
-│   ├── update_task.html
-│   ├── search.html
-│   ├── status.html
-│   └── 404.html
-└── static/
-    └── style.css
+
+### Priority
+
+Each task can have one of the following priorities:
+
+```text
+Low
+Medium
+High
 ```
 
-## Routes
+### Search
 
-| Route | Method | Purpose |
-|-------|--------|---------|
-| `/` | GET | Home page and navigation |
-| `/tasks` | GET | Show all tasks in a table |
-| `/create-task` | GET, POST | Show and process the create-task form |
-| `/update-task/<task_id>` | GET, POST | Show and process the update form |
-| `/search` | GET | Search tasks by keyword |
-| `/status/<task_id>` | GET, POST | Change the status of a task |
-| `/delete-task/<task_id>` | GET, POST | Delete a task |
+Tasks can be searched using words from the task title or description.
 
-## Usage
+### Delete
 
-1. **View tasks** — open `/tasks` to see the five sample tasks with their status.
-2. **Create a task** — open `/create-task`, fill in Task ID, Title and Description, pick a status
-   (Pending by default) and submit. Empty fields and duplicate Task IDs are rejected with a message.
-3. **Update a task** — press *Update* on any row, change the title or description and save. The
-   Task ID cannot be changed because it identifies the task.
-4. **Change status** — pick a new status from the dropdown on the task row and press *Save*, or use
-   the `/status/<task_id>` page. The three statuses are Pending, In Progress and Completed.
-5. **Search** — open `/search` and type a word from a title or description. The search ignores
-   upper and lower case. When nothing matches, the page says no tasks were found.
-6. **Delete a task** — press *Delete* on the row. A confirmation message is shown.
+Tasks can be deleted from the task list.
 
-If a Task ID in the URL does not exist (for example `/update-task/T999`), the application shows an
-error message and returns to the task list.
+## JSON Persistence
 
-## Notes
+Task data is stored in `tasks.json`.
 
-- Tasks are kept in memory, so restarting the server resets the list to the five sample tasks.
-- `find_task(task_id)` is the shared helper used by the update, status and delete routes.
-- Form input is read with `request.form`; the search keyword is read with `request.args`.
+When the application starts, the saved tasks are loaded from the JSON file.
+
+When a task is created, updated, deleted, or its status is changed, the updated data is saved back to the JSON file.
+
+The data flow is:
+
+```text
+tasks.json
+    ↓
+load_tasks()
+    ↓
+Python tasks list
+    ↓
+Flask application
+    ↓
+save_tasks()
+    ↓
+tasks.json
+```
+
+## Main Routes
+
+| Method    | Route                    | Description        |
+| --------- | ------------------------ | ------------------ |
+| GET       | `/`                      | Home page          |
+| GET       | `/tasks`                 | View all tasks     |
+| GET, POST | `/create-task`           | Create a task      |
+| GET       | `/task/<task_id>`        | View task details  |
+| GET, POST | `/update-task/<task_id>` | Update a task      |
+| GET       | `/search`                | Search tasks       |
+| GET, POST | `/status/<task_id>`      | Change task status |
+| POST      | `/delete-task/<task_id>` | Delete a task      |
+
+## Project Structure Explanation
+
+`app.py` creates the Flask application, registers the Blueprints, and handles the 404 page.
+
+`data.py` stores the task data and manages loading and saving tasks to `tasks.json`.
+
+`routes/main.py` contains the home page route.
+
+`routes/task.py` contains all task-related routes.
+
+`templates/` contains the Jinja2 HTML templates.
+
+`static/` contains the CSS used to style the application.
+
+## License
+
+This project was created as a Flask learning and assignment project.
