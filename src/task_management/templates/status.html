@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+Status of {{ task.task_id }} | Task Management System
+{% endblock %}
+
+{% block content %}
+
+<h1>Change status of {{ task.task_id }}</h1>
+
+<p class="lead">
+    {{ task.title }} — currently {{ task.status }}.
+</p>
+
+<form
+    class="card-form"
+    method="POST"
+    action="{{ url_for(
+        'task.change_status',
+        task_id=task.task_id
+    ) }}"
+>
+
+    <label for="status">
+        New status
+    </label>
+
+    <select id="status" name="status">
+
+        {% for status in statuses %}
+
+        <option
+            value="{{ status }}"
+            {% if status == task.status %}
+                selected
+            {% endif %}
+        >
+            {{ status }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <div class="actions">
+
+        <button type="submit" class="button">
+            Save status
+        </button>
+
+        <a
+            class="button ghost"
+            href="{{ url_for('task.view_tasks') }}"
+        >
+            Cancel
+        </a>
+
+    </div>
+
+</form>
+
+{% endblock %}

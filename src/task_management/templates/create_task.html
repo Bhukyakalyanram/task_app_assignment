@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Create task | Task Management System{% endblock %}
+
+{% block content %}
+
+<h1>Create a task</h1>
+
+<form class="card-form" method="POST"
+      action="{{ url_for('task.create_task') }}">
+
+    <label for="task_id">Task ID</label>
+
+    <input
+        type="text"
+        id="task_id"
+        name="task_id"
+        placeholder="T006"
+        value="{% if form %}{{ form.task_id }}{% endif %}"
+    >
+
+    <label for="title">Title</label>
+
+    <input
+        type="text"
+        id="title"
+        name="title"
+        placeholder="Short name for the task"
+        value="{% if form %}{{ form.title }}{% endif %}"
+    >
+
+    <label for="description">Description</label>
+
+    <textarea
+        id="description"
+        name="description"
+        rows="4"
+        placeholder="What needs to be done?"
+    >{% if form %}{{ form.description }}{% endif %}</textarea>
+
+    <label for="status">Status</label>
+
+    <select id="status" name="status">
+
+        {% for status in statuses %}
+
+        <option
+            value="{{ status }}"
+            {% if form and form.status == status %}
+                selected
+            {% elif not form and status == "Pending" %}
+                selected
+            {% endif %}
+        >
+            {{ status }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <label for="priority">Priority</label>
+
+    <select id="priority" name="priority">
+
+        {% for priority in priorities %}
+
+        <option
+            value="{{ priority }}"
+            {% if form and form.priority == priority %}
+                selected
+            {% elif not form and priority == "Medium" %}
+                selected
+            {% endif %}
+        >
+            {{ priority }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <div class="actions">
+
+        <button type="submit" class="button">
+            Create task
+        </button>
+
+        <a
+            class="button ghost"
+            href="{{ url_for('task.view_tasks') }}"
+        >
+            Cancel
+        </a>
+
+    </div>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Task Management System{% endblock %}
+
+{% block content %}
+
+<h1>Task Management System</h1>
+
+<p class="lead">
+    A simple team task board.
+    There
+    {% if total == 1 %}
+        is 1 task
+    {% else %}
+        are {{ total }} tasks
+    {% endif %}
+    stored right now.
+</p>
+
+<div class="actions">
+
+    <a class="button" href="{{ url_for('task.view_tasks') }}">
+        View tasks
+    </a>
+
+    <a class="button" href="{{ url_for('task.create_task') }}">
+        Create task
+    </a>
+
+    <a class="button" href="{{ url_for('task.search') }}">
+        Search tasks
+    </a>
+
+</div>
+
+<h2>What you can do here</h2>
+
+<ul class="plain-list">
+    <li>See every task with its ID, title, description and status.</li>
+    <li>Add a task with a unique Task ID.</li>
+    <li>Edit the title and description of a task.</li>
+    <li>Move a task between Pending, In Progress and Completed.</li>
+    <li>Find tasks by a word in the title or description.</li>
+    <li>Delete a task you no longer need.</li>
+</ul>
+
+{% endblock %}

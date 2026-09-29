@@ -1,0 +1,23 @@
+[
+    {
+        "task_id": "T003",
+        "title": "Learn Jinja2",
+        "description": "Practice Jinja2 templates and loops",
+        "status": "Pending",
+        "priority": "Low"
+    },
+    {
+        "task_id": "T007",
+        "title": "learn jinja",
+        "description": "jinja",
+        "status": "Pending",
+        "priority": "Low"
+    },
+    {
+        "task_id": "T008",
+        "title": "python learning",
+        "description": "learning python",
+        "status": "In Progress",
+        "priority": "High"
+    }
+]

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}
+Update {{ task.task_id }} | Task Management System
+{% endblock %}
+
+{% block content %}
+
+<h1>Update task {{ task.task_id }}</h1>
+
+<p class="lead">
+    You can change the title, description and priority.
+</p>
+
+<form
+    class="card-form"
+    method="POST"
+    action="{{ url_for('task.update_task', task_id=task.task_id) }}"
+>
+
+    <label for="task_id">Task ID</label>
+
+    <input
+        type="text"
+        id="task_id"
+        value="{{ task.task_id }}"
+        readonly
+    >
+
+    <label for="title">Title</label>
+
+    <input
+        type="text"
+        id="title"
+        name="title"
+        value="{{ task.title }}"
+    >
+
+    <label for="description">Description</label>
+
+    <textarea
+        id="description"
+        name="description"
+        rows="4"
+    >{{ task.description }}</textarea>
+
+    <label for="priority">Priority</label>
+
+    <select id="priority" name="priority">
+
+        {% for priority in priorities %}
+
+        <option
+            value="{{ priority }}"
+            {% if priority == task.priority %}
+                selected
+            {% endif %}
+        >
+            {{ priority }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <div class="actions">
+
+        <button type="submit" class="button">
+            Save changes
+        </button>
+
+        <a
+            class="button ghost"
+            href="{{ url_for('task.view_tasks') }}"
+        >
+            Cancel
+        </a>
+
+    </div>
+
+</form>
+
+<p class="note">
+
+    Current status: {{ task.status }} &middot;
+
+    <a
+        href="{{ url_for(
+            'task.change_status',
+            task_id=task.task_id
+        ) }}"
+    >
+        Change status
+    </a>
+
+</p>
+
+{% endblock %}

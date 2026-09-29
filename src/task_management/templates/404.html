@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Page not found | Task Management System{% endblock %}
+
+{% block content %}
+<h1>That page does not exist</h1>
+<p class="lead">Check the address, or pick one of the pages below.</p>
+
+<div class="actions">
+    <a class="button" href="{{ url_for('main.home') }}">Home</a>
+    <a class="button ghost" href="{{ url_for('task.view_tasks') }}">View tasks</a>
+</div>
+{% endblock %}

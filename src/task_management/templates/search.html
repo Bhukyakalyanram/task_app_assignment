@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}Search | Task Management System{% endblock %}
+
+{% block content %}
+
+<h1>Search tasks</h1>
+
+<form
+    class="search-form"
+    method="GET"
+    action="{{ url_for('task.search') }}"
+>
+
+    <label for="keyword">
+        Title or description keyword
+    </label>
+
+    <div class="search-row">
+
+        <input
+            type="text"
+            id="keyword"
+            name="keyword"
+            value="{{ keyword }}"
+            placeholder="python"
+        >
+
+        <button type="submit" class="button">
+            Search
+        </button>
+
+    </div>
+
+</form>
+
+{% if searched %}
+
+    {% if results %}
+
+        <p class="lead">
+            {{ results|length }}
+            task{% if results|length != 1 %}s{% endif %}
+            matching "{{ keyword }}".
+        </p>
+
+        <table class="task-table">
+
+            <thead>
+                <tr>
+                    <th>Task ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for task in results %}
+
+                <tr>
+
+                    <td class="task-id">
+                        {{ task.task_id }}
+                    </td>
+
+                    <td>
+                        {{ task.title }}
+                    </td>
+
+                    <td>
+                        {{ task.description }}
+                    </td>
+
+                    <td>
+
+                        {% if task.status == 'Completed' %}
+
+                            <span class="status done">
+                                Completed
+                            </span>
+
+                        {% elif task.status == 'In Progress' %}
+
+                            <span class="status doing">
+                                In Progress
+                            </span>
+
+                        {% else %}
+
+                            <span class="status todo">
+                                Pending
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td class="row-actions">
+
+                        <a
+                            class="button small"
+                            href="{{ url_for(
+                                'task.update_task',
+                                task_id=task.task_id
+                            ) }}"
+                        >
+                            Update
+                        </a>
+
+                        <a
+                            class="button small"
+                            href="{{ url_for(
+                                'task.change_status',
+                                task_id=task.task_id
+                            ) }}"
+                        >
+                            Status
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    {% else %}
+
+        <p class="empty">
+            No tasks found for "{{ keyword }}".
+            Try another word.
+        </p>
+
+    {% endif %}
+
+{% else %}
+
+    <p class="note">
+        Search here
+    </p>
+
+{% endif %}
+
+{% endblock %}
